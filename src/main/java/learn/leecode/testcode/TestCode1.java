@@ -1,5 +1,8 @@
 package learn.leecode.testcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * testCode1
  *
@@ -7,16 +10,12 @@ package learn.leecode.testcode;
  */
 public class TestCode1 {
     public static void main(String[] args) {
-        if (Boolean.TRUE)
-            if (Boolean.FALSE)
-                System.out.println("11111111111");
-            else
-                System.out.println("22222222222");
-        else;
-        {
-            int a;
-            a = 2;
-            System.out.println(a);
-        }
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
+        list.add("5");
+        System.out.println(list.subList(1, 3));
     }
 }
