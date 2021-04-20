@@ -72,6 +72,7 @@ public class LeCode28 {
         for (int start = 0; start < n - len + 1; ++start) {
             // 当前字符与字符串第一个字符匹配时才比较
             if (haystack.charAt(start) == needle.charAt(0)
+                    // 截取从索引起始到索引结束字符
                     && haystack.substring(start, start + len).equals(needle)) {
                 return start;
             }
