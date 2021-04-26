@@ -38,7 +38,9 @@ public class LeCode897 {
     private static TreeNode leftNode = new TreeNode();
 
     public static TreeNode increasingBst(TreeNode root) {
+        // 哨兵节点
         TreeNode dummyNode = new TreeNode(-1);
+        // 滑动节点
         leftNode = dummyNode;
         getNode(root);
         return dummyNode.right;
