@@ -72,7 +72,7 @@ public class LeCode1011 {
         int left = max.isPresent() ? max.getAsInt() : 1;
         // 起始右边界，包裹总和
         int sum = Arrays.stream(weights).sum();
-        // 二分获取天数
+        // 二分获取承载重量
         while (left < sum) {
             int mid = (left + sum) >> 1;
             // 获取该承载重量所需的天数
