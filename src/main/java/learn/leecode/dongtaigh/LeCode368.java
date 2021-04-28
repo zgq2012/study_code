@@ -1,4 +1,4 @@
-package learn.leecode.other;
+package learn.leecode.dongtaigh;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ import java.util.*;
 public class LeCode368 {
 
     public static void main(String[] args) {
-        int[] height = {5, 4, 8, 3, 2};
+        int[] height = {1,2,3};
         List<Integer> res = largestDivisibleSubset(height);
         System.out.println(res);
     }
@@ -68,6 +68,7 @@ public class LeCode368 {
         }
 
         for (int i = len - 1; i >= 0 && maxSize > 0; i--) {
+            // 取模==0表示可能是该max的子集的元素，dp[i] == maxSize 确认是该子集下的元素，而不是其他子集的元素
             if (dp[i] == maxSize && maxVal % nums[i] == 0) {
                 res.add(nums[i]);
                 maxVal = nums[i];
