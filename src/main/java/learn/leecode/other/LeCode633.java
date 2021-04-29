@@ -79,6 +79,7 @@ public class LeCode633 {
         int a = 0;
         int b = (int) Math.ceil(Math.sqrt(c));
         while (a <= b) {
+            // 这里需要转化为long，因为 sum 可能会溢出
             int sum = a * a + b * b;
             if (sum < c) {
                 // 表示值小了，需要左边界收拢
