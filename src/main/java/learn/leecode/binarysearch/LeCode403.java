@@ -1,4 +1,4 @@
-package learn.leecode.other;
+package learn.leecode.binarysearch;
 
 import java.util.Arrays;
 
@@ -63,13 +63,14 @@ public class LeCode403 {
 
         // 遍历在i的位置可以达到的所有石子的位置的间隔单位lastDis
         for (int curDis = lastDis - 1; curDis <= lastDis + 1; curDis++) {
-            // 间隔位置大于0表示需要继续查找下一状态
+            // 间隔位置大于0表示需要继续查找下一状态，小于=0表示移动距离为0，这是不合理的，直接进入下一状态
             if (curDis <= 0) {
                 continue;
             }
-            // 2分查找下一位置当位前位置
+            // 这里也可以通过map的记忆化来直接获取curDis + stones[i]的索引，找不到就是null。
+            // 从i+1开始，长度length结束 2分查找下一位石子curDis + stones[i]的位置
             int j = Arrays.binarySearch(stones, i + 1, stones.length, curDis + stones[i]);
-            // 若j的位置大于0，则以i的位置可以达到的某一位置j,去重复i位置的操作
+            // 若j的位置大于0，则以i的位置可以达到的某一位置j,去重复i位置的操作，小于0则表示找不到该位置，直接进入下一状态
             if (j < 0) {
                 continue;
             }

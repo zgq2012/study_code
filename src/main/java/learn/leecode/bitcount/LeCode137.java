@@ -1,14 +1,18 @@
 package learn.leecode.bitcount;
 
 /**
- * 137
+ * 137.只出现一次的数字II
  *
  * @author zgq
  */
 public class LeCode137 {
     public static void main(String[] args) {
         int[] nums = {1, 1, 1, 2, 2, 2, 3, 3, 4, 3};
+        // 最优解
         int result = singleNumber(nums);
+        // 其他解法：
+        // 利用map计数，但是空间复杂度上升
+        // 使用数学方法，数组去重后，sum * 3 - 原数组的sum = result * 2
         System.out.println(result);
     }
 
@@ -34,14 +38,14 @@ public class LeCode137 {
         temp2 = ~temp1 & (temp2^num);
         3次过后掩码恢复到原来的数据
         若，有一个数只出现一次，那么掩码temp1就是单独出现的那个数
-         */
+        */
         int temp1 = 0;
         int temp2 = 0;
         for (int num : nums) {
             temp1 = ~temp2 & (temp1 ^ num);
             temp2 = ~temp1 & (temp2 ^ num);
         }
-        // 3此过后
+        // 3次过后
         return temp1;
     }
 }
