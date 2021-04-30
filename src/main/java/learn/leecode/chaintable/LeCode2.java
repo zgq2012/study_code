@@ -57,12 +57,8 @@ public class LeCode2 {
             // 哨兵节点继续往下走
             cursor = sumNode;
             // 不为空时，2数 继续往下走
-            if (l1 != null) {
-                l1 = l1.next;
-            }
-            if (l2 != null) {
-                l2 = l2.next;
-            }
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
         }
 
         return root.next;
