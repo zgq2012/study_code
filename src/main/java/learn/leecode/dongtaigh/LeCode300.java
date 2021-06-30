@@ -1,5 +1,7 @@
 package learn.leecode.dongtaigh;
 
+import java.util.Arrays;
+
 /**
  * 300
  *
@@ -23,6 +25,7 @@ public class LeCode300 {
         int[] nums = {10, 9, 2, 5, 3, 4, 7, 101, 18};
         // 定义新数组，记录每一个索引位置所在的最大上升序列长度
         int[] dp = new int[nums.length];
+        Arrays.fill(nums, 1);
         // 初始化0节点
         dp[0] = 1;
         // 初始化最大值
