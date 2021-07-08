@@ -1,7 +1,5 @@
 package learn.leecode.day;
 
-import java.util.*;
-
 /**
  * 179. 最大数
  *
