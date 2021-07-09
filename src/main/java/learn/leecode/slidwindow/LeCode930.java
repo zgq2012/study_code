@@ -52,7 +52,7 @@ public class LeCode930 {
         int left1 = 0, left2 = 0, right = 0;
         int sum1 = 0, sum2 = 0;
         int ret = 0;
-        // 终止条件 右边界达到数组右边界后, 0<= rigth <= n-1
+        // 终止条件 右边界达到数组右边界后, 0<= right <= n-1
         while (right < n) {
             // 记录sum > goal 的情况
             sum1 += nums[right];
