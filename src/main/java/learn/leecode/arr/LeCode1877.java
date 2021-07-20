@@ -45,6 +45,7 @@ public class LeCode1877 {
      * 1 <= nums[i] <= 10^5
      */
     private static int minPairSum(int[] nums) {
+        // 关键问题在于证明 首尾相加最小数对，
         Arrays.sort(nums);
         int len = nums.length;
         int max = 0;
