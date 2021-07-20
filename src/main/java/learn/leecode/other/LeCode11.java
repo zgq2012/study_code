@@ -1,7 +1,8 @@
 package learn.leecode.other;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 11
@@ -14,7 +15,8 @@ public class LeCode11 {
         int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};
 //        int[] height = {1, 2, 4, 3};
         int res = maxArea(height);
-        System.out.println(res);
+        removeData();
+        System.out.println("res = " + res);
     }
 
     /**
@@ -64,5 +66,28 @@ public class LeCode11 {
         }
 
         return max;
+    }
+
+    public static void removeData(){
+        List<String> empNos = new ArrayList<>();
+        List<String> customerImportVos = new ArrayList<>();
+        customerImportVos.add("1");
+        customerImportVos.add("1");
+        customerImportVos.add("2");
+        customerImportVos.add("2");
+        customerImportVos.add("4");
+        System.out.println(customerImportVos);
+        Iterator<String> iterator = customerImportVos.iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if (!empNos.contains(next)) {
+                empNos.add(next);
+                continue;
+            }
+            // 包含则删除
+            iterator.remove();
+        }
+
+        System.out.println(customerImportVos);
     }
 }
