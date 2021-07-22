@@ -1,8 +1,13 @@
 package learn.leecode.arr;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.ListUtil;
+import org.apache.tools.ant.util.CollectionUtils;
+
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 1877. 数组中最大数对和的最小值
