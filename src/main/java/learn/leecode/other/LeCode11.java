@@ -1,9 +1,5 @@
 package learn.leecode.other;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * 11
  *
@@ -15,7 +11,6 @@ public class LeCode11 {
         int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};
 //        int[] height = {1, 2, 4, 3};
         int res = maxArea(height);
-        removeData();
         System.out.println("res = " + res);
     }
 
@@ -55,39 +50,17 @@ public class LeCode11 {
             max = height[i] <= height[j] ?
                     Math.max(max, (j - i) * height[i++]):
                     Math.max(max, (j - i) * height[j--]);
-            // 计算当前位置和之前的比的最大值
-//            max = Math.max(max, (j - i) * Math.min(height[i], height[j]));
-            // 若左指针的值大于了右指针的值，则将右指针减一，反之左指针加一
-//            if (height[i] <= height[j]) {
-//                i++;
-//            } else {
-//                j--;
-//            }
+             /*
+            计算当前位置和之前的比的最大值
+            max = Math.max(max, (j - i) * Math.min(height[i], height[j]))
+            若左指针的值大于了右指针的值，则将右指针减一，反之左指针加一
+            if (height[i] <= height[j]) {
+                i++
+            } else {
+                j--
+            }*/
         }
 
         return max;
-    }
-
-    public static void removeData(){
-        List<String> empNos = new ArrayList<>();
-        List<String> customerImportVos = new ArrayList<>();
-        customerImportVos.add("1");
-        customerImportVos.add("1");
-        customerImportVos.add("2");
-        customerImportVos.add("2");
-        customerImportVos.add("4");
-        System.out.println(customerImportVos);
-        Iterator<String> iterator = customerImportVos.iterator();
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            if (!empNos.contains(next)) {
-                empNos.add(next);
-                continue;
-            }
-            // 包含则删除
-            iterator.remove();
-        }
-
-        System.out.println(customerImportVos);
     }
 }
