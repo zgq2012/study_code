@@ -1,8 +1,5 @@
 package learn.leecode.tree;
 
-
-import cn.hutool.core.collection.CollectionUtil;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +20,6 @@ public class LeCode102 {
         root3.left = new TreeNode(9);
         root3.right = root20;
         root3.left.left = new TreeNode();
-
 
         List<List<Integer>> deep = levelOrder(root3);
         System.out.println(deep);
