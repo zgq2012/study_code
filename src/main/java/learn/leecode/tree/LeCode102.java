@@ -4,7 +4,9 @@ package learn.leecode.tree;
 import cn.hutool.core.collection.CollectionUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * 102
@@ -20,6 +22,8 @@ public class LeCode102 {
         root20.right = new TreeNode(7);
         root3.left = new TreeNode(9);
         root3.right = root20;
+        root3.left.left = new TreeNode();
+
 
         List<List<Integer>> deep = levelOrder(root3);
         System.out.println(deep);
@@ -46,29 +50,44 @@ public class LeCode102 {
      * @param root 树
      */
     public static List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        List<Integer> node = new ArrayList<>();
-        node.add(root.val);
-        result.add(node);
-        setOther(root, result);
-        return result;
-    }
-
-    private static void setOther(TreeNode root, List<List<Integer>> result) {
+        List<List<Integer>> ret = new ArrayList<>();
+        // root == null 时，直接返回空数组
         if (root == null) {
-            return;
+            return ret;
         }
-        List<Integer> node = new ArrayList<>();
-        if (root.left != null) {
-            node.add(root.left.val);
+
+        // 采用队列存储树，利用队列性质来取数据以及剔除数据
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        // 如果队列不为空，表示还有数据
+        while (!queue.isEmpty()) {
+            List<Integer> level = new ArrayList<>();
+            // 获取树的某一层级的count
+            int currentLevelSize = queue.size();
+            for (int i = 1; i <= currentLevelSize; ++i) {
+                // 抛出队列的头数据，
+                TreeNode node = queue.poll();
+                if (node == null) {
+                    continue;
+                }
+                // 记录队列的值
+                level.add(node.val);
+
+                if (node.left != null) {
+                    // 将抛出的节点的左子节点放到队尾
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    // 将抛出的节点的右子节点放到队尾
+                    queue.offer(node.right);
+                }
+            }
+
+            // 记录该层级的数据
+            ret.add(level);
         }
-        if (root.right != null) {
-            node.add(root.right.val);
-        }
-        if (!CollectionUtil.isEmpty(node)) {
-            result.add(node);
-        }
-        setOther(root.left, result);
-        setOther(root.right, result);
+
+        return ret;
     }
 }
