@@ -54,11 +54,17 @@ public class LeCode1143 {
             char charI = text1.charAt(i - 1);
             for (int j = 1; j <= text2.length(); j++) {
                 char charJ = text2.charAt(j - 1);
-                // 若2个字符相等则，dp[i][j] = dp[i - 1][j - 1] + 1,
+                /*
+                 * - a b c d e
+                 * a 1 1 1 1 1
+                 * c 1 1 2 2 2
+                 * e 1 1 2 2 3
+                 * 若2个字符相等则，dp[i][j] = dp[i - 1][j - 1] + 1,
+                 * 若2个字符不相等则，dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]),
+                 */
                 if (charI == charJ) {
                     dp[i][j] = dp[i - 1][j - 1] + 1;
                 } else {
-                    // 若2个字符不相等则，dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]),
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
