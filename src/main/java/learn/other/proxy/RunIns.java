@@ -13,5 +13,5 @@ public interface RunIns {
      *
      * @param name 名称
      */
-    void runDay(String name);
+    String runDay(String name);
 }

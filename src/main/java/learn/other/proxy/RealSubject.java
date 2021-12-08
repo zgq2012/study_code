@@ -15,8 +15,9 @@ public class RealSubject implements Subject, RunIns {
     }
 
     @Override
-    public void runDay(String name) {
+    public String runDay(String name) {
         System.out.println("奔跑者是：" + name);
+        return name;
     }
 
     public void drink(String water){

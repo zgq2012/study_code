@@ -4,6 +4,8 @@ import learn.other.proxy.RealSubject;
 import learn.other.proxy.RunIns;
 import learn.other.proxy.Subject;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
@@ -38,14 +40,26 @@ public class DynamicProxy {
         return Proxy.newProxyInstance(target.getClass().getClassLoader(),
                 target.getClass().getInterfaces(),
                 // o:代理对象, method:要代理执行的方法, args:方法参数
-                (o, method, args) -> {
-                    System.out.println("object正在被代理！");
-                    // 执行代理方法
-                    // 用代理对象执行执行
-                    method.invoke(target, args);
-                    System.out.println("object代理结束！");
-                    return null;
-                });
+                new InvocationHandler() {
+                    @Override
+                    public Object invoke(Object o, Method method, Object[] args) throws Throwable {
+                        System.out.println("object正在被代理！");
+                        Object invoke = method.invoke(target, args);
+                        System.out.println("object代理结束！");
+                        // 返回方法的结果值
+                        return invoke;
+                    }
+                }
+
+//                (o, method, args) -> {
+//                    System.out.println("object正在被代理！");
+//                    // 执行代理方法
+//                    // 用代理对象执行执行
+//                    method.invoke(target, args);
+//                    System.out.println("object代理结束！");
+//                    return null;
+//                }
+        );
     }
 
     public static void main(String[] args) {
@@ -55,6 +69,7 @@ public class DynamicProxy {
         RunIns runIns = (RunIns) new DynamicProxy(realSubject).getProxyIns();
         System.out.println(subject.getClass());
         subject.work("zgq");
-        runIns.runDay("zgq");
+        String res = runIns.runDay("zgq");
+        System.out.println("res = " + res);
     }
 }
