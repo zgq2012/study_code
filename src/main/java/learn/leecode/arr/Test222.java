@@ -218,7 +218,9 @@ public class Test222 {
 
         // 线程池
         ThreadPoolExecutor pool = new ThreadPoolExecutor(
-                // 核心线程数
+                // 核心线程数,
+                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
+                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
                 5,
                 // 最大线程数
                 10,
