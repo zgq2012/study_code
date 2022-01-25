@@ -12,24 +12,33 @@ public class Test123 {
 
     public static class Person {
         private String name;
+        private String age;
         // 省略构造函数、Getter&Setter方法
 
         public String getName() {
             return name;
         }
+        public String getAge() {
+            return age;
+        }
+
 
         public void setName(String name) {
             this.name = name;
         }
+        public void setAge(String age) {
+            this.age = age;
+        }
 
-        public Person(String name) {
+        public Person(String name, String age) {
             this.name = name;
+            this.age = age;
         }
     }
 
     public static void main(String[] args) {
-        Person xiaoZhang = new Person("小张");
-        Person xiaoLi = new Person("小李");
+        Person xiaoZhang = new Person("小张", "22");
+        Person xiaoLi = new Person("小李", "22");
         swap(xiaoZhang, xiaoLi);
         System.out.println("xiaoZhang:" + xiaoZhang.getName());
         System.out.println("xiaoLi:" + xiaoLi.getName());
