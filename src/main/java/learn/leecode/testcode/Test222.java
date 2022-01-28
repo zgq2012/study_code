@@ -1,10 +1,9 @@
-package learn.leecode.arr;
+package learn.leecode.testcode;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.thread.NamedThreadFactory;
 
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * test
@@ -16,6 +15,16 @@ import java.util.stream.Collectors;
 public class Test222 {
 
     public static void main(String[] args) {
+        // dynamicThreadPool
+        try {
+            dynamicThreadPool();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // concurrentSkipListMap 跳表
+        concurrentSkipMap();
+
         // threadLocal
         threadLocal();
 
@@ -41,8 +50,101 @@ public class Test222 {
         sortByEnCn();
     }
 
+    private static void dynamicThreadPool() throws Exception {
+        // 线程池
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(
+                // 核心线程数,
+                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
+                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
+                5,
+                // 最大线程数
+                10,
+                // 线程存活时间
+                5,
+                TimeUnit.MINUTES,
+                // 阻塞队列，以及队列长度
+                new LinkedBlockingQueue<>(20),
+                // 线程工厂
+                new NamedThreadFactory("zgq", false),
+                // 拒绝策略
+                new ThreadPoolExecutor.CallerRunsPolicy());
+
+
+        for (int i = 0; i < 40; i++) {
+            int temp = i;
+            pool.execute(() -> {
+                getThreadPoolStatus(pool, "创建任务" + temp);
+
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        getThreadPoolStatus(pool, "修改前");
+        TimeUnit.SECONDS.sleep(1);
+
+        pool.setCorePoolSize(10);
+        pool.setCorePoolSize(10);
+        LinkedBlockingQueue<Runnable> queue = (LinkedBlockingQueue) pool.getQueue();
+        queue.setCapacity(50);
+        pool.allowCoreThreadTimeOut(true);
+
+        getThreadPoolStatus(pool, "修改后");
+
+    }
+
+    private static void getThreadPoolStatus(ThreadPoolExecutor pool, String msg) {
+        LinkedBlockingQueue<Runnable> queue = (LinkedBlockingQueue) pool.getQueue();
+        int corePoolSize = pool.getCorePoolSize();
+        int maximumPoolSize = pool.getMaximumPoolSize();
+        int activeCount = pool.getActiveCount();
+        long completedTaskCount = pool.getCompletedTaskCount();
+        int qSize = queue.size();
+        int reCa = queue.remainingCapacity();
+        System.out.println(Thread.currentThread().getName() + "-" + msg + "-:" +
+                " 核心线程数：" + corePoolSize +
+                " 最大线程数：" + maximumPoolSize +
+                " 线程池活跃度：" + activeCount * 100 / maximumPoolSize + "%" +
+                " 任务完成数：" + completedTaskCount +
+                " 队列大小：" + (qSize + reCa) +
+                " 当前排队线程数：" + qSize +
+                " 队列剩余大小：" + reCa +
+                " 队列使用度：" + qSize * 100 / (qSize + reCa) + "%"
+        );
+    }
+
+    private static void concurrentSkipMap() {
+//        ConcurrentSkipListMap<String, String> map = new ConcurrentSkipListMap<>();
+//        map.put("2022-05-01", "32");
+//        map.put("2022-07-01", "32");
+//        map.put("2022-06-01", "32");
+//        map.put("2021-07-01", "32");
+//        System.out.println(map.keySet());
+    }
+
     private static void threadLocal() {
 //        Thread thread = Thread.currentThread();
+//        ThreadLocal<Object> threadLocal = ThreadLocal.withInitial(() -> "5425");
+//
+//        Thread thread1 = new Thread(() -> {
+//            ThreadLocal<Object> stringThreadLocal = threadLocal;
+//            System.out.println(stringThreadLocal.get());
+//            System.out.println(threadLocal.get());
+//        });
+//
+//        thread1.start();
+//
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println(threadLocal.get());
+
 //        ThreadLocal<Test123.Person> zgq = ThreadLocal.withInitial(() -> new Test123.Person("zgq", "123"));
 //        System.out.println("zgq.get().getAge() = " + zgq.get().getAge());
 //        zgq.set(null);
@@ -214,53 +316,53 @@ public class Test222 {
     }
 
     private static void asyncMo() {
-        List<Integer> list = CollectionUtil.newArrayList(1, 2, 3, 4, 5, 6);
-
-        // 线程池
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(
-                // 核心线程数,
-                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
-                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
-                5,
-                // 最大线程数
-                10,
-                // 线程存活时间
-                5,
-                TimeUnit.MINUTES,
-                // 阻塞队列，以及队列长度
-                new ArrayBlockingQueue<>(300),
-                // 拒绝策略
-                new ThreadPoolExecutor.CallerRunsPolicy());
-
-        List<CompletableFuture<Integer>> cs = list.stream()
-                .map(v -> CompletableFuture.supplyAsync(
-                        // 线程执行操作
-                        () -> {
-                            System.out.println("执行任务：" + v);
-                            return v;
-                        },
-                        // 自定义线程池
-                        pool
-                )).collect(Collectors.toList());
-
-        CompletableFuture
-                // 所有的线程组合
-                .allOf(cs.toArray(new CompletableFuture[0]))
-                // 等待所有线程执行完
-                .join();
-
-        // 得到每一个线程执行的结果
-        System.out.println(cs.stream().map(v -> {
-            try {
-                return v.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                return 0;
-            }
-        }).collect(Collectors.toList()));
-
-        // 关闭线程池
-        pool.shutdown();
+//        List<Integer> list = CollectionUtil.newArrayList(1, 2, 3, 4, 5, 6);
+//
+//        // 线程池
+//        ThreadPoolExecutor pool = new ThreadPoolExecutor(
+//                // 核心线程数,
+//                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
+//                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
+//                5,
+//                // 最大线程数
+//                10,
+//                // 线程存活时间
+//                5,
+//                TimeUnit.MINUTES,
+//                // 阻塞队列，以及队列长度
+//                new ArrayBlockingQueue<>(300),
+//                // 拒绝策略
+//                new ThreadPoolExecutor.CallerRunsPolicy());
+//
+//        List<CompletableFuture<Integer>> cs = list.stream()
+//                .map(v -> CompletableFuture.supplyAsync(
+//                        // 线程执行操作
+//                        () -> {
+//                            System.out.println("执行任务：" + v);
+//                            return v;
+//                        },
+//                        // 自定义线程池
+//                        pool
+//                )).collect(Collectors.toList());
+//
+//        CompletableFuture
+//                // 所有的线程组合
+//                .allOf(cs.toArray(new CompletableFuture[0]))
+//                // 等待所有线程执行完
+//                .join();
+//
+//        // 得到每一个线程执行的结果
+//        System.out.println(cs.stream().map(v -> {
+//            try {
+//                return v.get();
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//                return 0;
+//            }
+//        }).collect(Collectors.toList()));
+//
+//        // 关闭线程池
+//        pool.shutdown();
 
 //        List<Test123.Person> perList = CollectionUtil.newArrayList(new Test123.Person("zgq", "93"),
 //                new Test123.Person("zs", null));
