@@ -1,9 +1,15 @@
 package learn.leecode.testcode;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.thread.NamedThreadFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * test
@@ -52,47 +58,88 @@ public class Test222 {
 
     private static void dynamicThreadPool() throws Exception {
         // 线程池
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(
-                // 核心线程数,
-                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
-                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
-                5,
-                // 最大线程数
-                10,
-                // 线程存活时间
-                5,
-                TimeUnit.MINUTES,
-                // 阻塞队列，以及队列长度
-                new LinkedBlockingQueue<>(20),
-                // 线程工厂
-                new NamedThreadFactory("zgq", false),
-                // 拒绝策略
-                new ThreadPoolExecutor.CallerRunsPolicy());
+//        ThreadPoolExecutor pool = new ThreadPoolExecutor(
+//                // 核心线程数,
+//                // CPU 密集型任务(N+1或+2),让每一个cpu都一直运行，+1/2 用于防止线程偶发的缺页中断从而导致cpu空闲
+//                // I/O 密集型任务(2N)，I/O过程不占用cpu,此时可以让其去干其他的，减少cpu空闲
+//                5,
+//                // 最大线程数
+//                10,
+//                // 线程存活时间
+//                60,
+//                TimeUnit.SECONDS,
+//                // 阻塞队列，以及队列长度
+//                new LinkedBlockingQueue<>(20),
+//                // 线程工厂
+//                new NamedThreadFactory("zgq", false),
+//                // 拒绝策略
+//                new ThreadPoolExecutor.CallerRunsPolicy());
+//
+//        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+//            try {
+//                System.out.println("开始执行：-100");
+////                    TimeUnit.SECONDS.sleep(temp);
+//                TimeUnit.SECONDS.sleep(1);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            return "-100";
+//        }, pool);
+//
+////        List<CompletableFuture<String>> list = CollectionUtil.newArrayList();
+//        for (int i = 0; i < 100; i++) {
+//            int temp = i;
+//            future = future.thenCombineAsync(CompletableFuture.supplyAsync(() -> {
+//                try {
+//                    System.out.println("开始执行：" + temp);
+////                    TimeUnit.SECONDS.sleep(temp);
+//                    TimeUnit.MINUTES.sleep(1);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                return "" + temp;
+//            }, pool), String::concat);
+////            list.add(future);
+//        }
+//
+//        System.out.println(future.get());
+//
+//        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(list.toArray(new CompletableFuture[0]));
+//        completableFuture.join();
+//
+//        List<String> collect = list.stream().map(v -> {
+//            try {
+//                return v.get();
+//            } catch (InterruptedException | ExecutionException e) {
+//                return "-1";
+//            }
+//        }).collect(Collectors.toList());
+//        System.out.println(collect);
 
 
-        for (int i = 0; i < 40; i++) {
-            int temp = i;
-            pool.execute(() -> {
-                getThreadPoolStatus(pool, "创建任务" + temp);
-
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-
-        getThreadPoolStatus(pool, "修改前");
-        TimeUnit.SECONDS.sleep(1);
-
-        pool.setCorePoolSize(10);
-        pool.setCorePoolSize(10);
-        LinkedBlockingQueue<Runnable> queue = (LinkedBlockingQueue) pool.getQueue();
-        queue.setCapacity(50);
-        pool.allowCoreThreadTimeOut(true);
-
-        getThreadPoolStatus(pool, "修改后");
+//        for (int i = 0; i < 40; i++) {
+//            int temp = i;
+//            pool.execute(() -> {
+//                getThreadPoolStatus(pool, "创建任务" + temp);
+//
+//                try {
+//                    TimeUnit.SECONDS.sleep(1);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//
+//        getThreadPoolStatus(pool, "修改前");
+//        TimeUnit.SECONDS.sleep(1);
+//
+//        pool.setCorePoolSize(10);
+//        pool.setCorePoolSize(10);
+//        LinkedBlockingQueue<Runnable> queue = (LinkedBlockingQueue) pool.getQueue();
+//        queue.setCapacity(50);
+//        pool.allowCoreThreadTimeOut(true);
+//
+//        getThreadPoolStatus(pool, "修改后");
 
     }
 
