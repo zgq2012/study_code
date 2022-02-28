@@ -3,8 +3,7 @@ package learn.leecode.testcode;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.thread.NamedThreadFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;

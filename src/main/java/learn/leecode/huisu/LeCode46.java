@@ -1,6 +1,7 @@
 package learn.leecode.huisu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class LeCode46 {
             // 表示索引已经达到length长度，即数组的所有值都走过一遍,也是该方法的结束条件
             // 采用copy的方式记录，因为indexList会一直变，直到最后
             result.add(new ArrayList<>(indexList));
+            return;
         }
 
         for (int i = index; i < length; i++) {

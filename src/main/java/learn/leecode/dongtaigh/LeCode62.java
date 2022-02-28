@@ -52,6 +52,7 @@ public class LeCode62 {
                     continue;
                 }
 //                d[i][j] = d[i - 1][j] + d[i][j - 1];
+                // 因为滚动数组之后， res[j]，在i=0;之后就已经存在值，每次重新赋值都时带上了上一行的数据
                 res[j] = res[j - 1] + res[j];
             }
         }
