@@ -21,6 +21,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile('cglib:cglib:3.2.4')
     compile('cn.hutool:hutool-all:5.3.7')
+    compile('com.alibaba:easyexcel:2.2.6')
     implementation "org.apache.commons:commons-math3:3.6.1"
 }
 
