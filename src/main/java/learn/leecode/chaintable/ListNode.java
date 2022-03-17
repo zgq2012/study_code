@@ -12,4 +12,9 @@ public class ListNode {
     ListNode(int x) {
         val = x;
     }
+
+    ListNode(int x, ListNode nextNode) {
+        val = x;
+        next = nextNode;
+    }
 }
