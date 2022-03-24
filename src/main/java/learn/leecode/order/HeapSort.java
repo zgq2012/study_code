@@ -17,7 +17,7 @@ public class HeapSort {
         int[] arr1 = Arrays.copyOf(arr, arr.length);
 
         int[] res = heapSort(arr1);
-        System.out.println(Arrays.toString(arr1));
+        System.out.println(Arrays.toString(res));
     }
 
     /**
