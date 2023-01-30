@@ -262,67 +262,41 @@ public class RbTree<T extends Comparable<T>> {
         while (isRed((parent = parentOf(insertNode)))) {
             gParent = parentOf(parent);
 
-            // 若父节点为祖父节点的左子树
-            if (parent == gParent.left) {
-                // 若当前节点的叔叔节点为红色时
-                RbTreeNode<T> uncleNode = gParent.right;
-                if (isRed(uncleNode)) {
-                    // 将当前节点的叔叔节点设为黑色
-                    setBlack(uncleNode);
-                    // 将当前节点的父节点设为黑色
-                    setBlack(parent);
-                    // 将当前节点的祖父节点设为黑色
-                    setRed(gParent);
-                    // 将当前节点的祖父节点设为新的当前节点
-                    insertNode = gParent;
-                    continue;
-                }
-                // 若当前节点的叔叔节点为黑色，且当前插入节点是右子树
-                if (parent.right == insertNode) {
-                    RbTreeNode<T> temp;
-                    // 以当前节点的父节点左旋
-                    leftRotate(parent);
-                    // 以当前节点的父节点作为新的当前节点继续操作
-                    temp = parent;
-                    insertNode = temp;
-                    continue;
-                }
-                // 若当前节点是黑色，且为左子树
-                setBlack(parent);
-                setRed(gParent);
-                // 右旋祖父节点
-                rightRotate(gParent);
-            } else {
-                // 若当前节点的叔叔节点为红色时
-                RbTreeNode<T> uncleNode = gParent.left;
-                if (isRed(uncleNode)) {
-                    // 将当前节点的叔叔节点设为黑色
-                    setBlack(uncleNode);
-                    // 将当前节点的父节点设为黑色
-                    setBlack(parent);
-                    // 将当前节点的祖父节点设为黑色
-                    setRed(gParent);
-                    // 将当前节点的祖父节点设为新的当前节点
-                    insertNode = gParent;
-                    continue;
-                }
-                // 若当前节点的叔叔节点为黑色，且当前插入节点是右子树
-                if (parent.right == insertNode) {
-                    RbTreeNode<T> temp;
-                    // 以当前节点的父节点左旋
-                    leftRotate(parent);
-                    // 以当前节点的父节点作为新的当前节点继续操作
-                    temp = parent;
-                    insertNode = temp;
-                    continue;
-                }
-                // 若当前节点是黑色，且为左子树
-                setBlack(parent);
-                setRed(gParent);
-                // 右旋祖父节点
-                rightRotate(gParent);
-            }
+            // 若父节点为祖父节点的左子树，则叔叔节点为祖父右子树，反之为祖父左子树
+            RbTreeNode<T> uncleNode = parent == gParent.left ? gParent.right : gParent.left;
+            updateNode(uncleNode, parent, gParent, insertNode);
         }
+    }
+
+    private void updateNode(RbTreeNode<T> uncleNode, RbTreeNode<T> parent,
+                            RbTreeNode<T> gParent, RbTreeNode<T> insertNode) {
+        // 若当前节点的叔叔节点为红色时
+        if (isRed(uncleNode)) {
+            // 将当前节点的叔叔节点设为黑色
+            setBlack(uncleNode);
+            // 将当前节点的父节点设为黑色
+            setBlack(parent);
+            // 将当前节点的祖父节点设为黑色
+            setRed(gParent);
+            // 将当前节点的祖父节点设为新的当前节点
+            insertNode = gParent;
+            return;
+        }
+        // 若当前节点的叔叔节点为黑色，且当前插入节点是右子树
+        if (parent.right == insertNode) {
+            RbTreeNode<T> temp;
+            // 以当前节点的父节点左旋
+            leftRotate(parent);
+            // 以当前节点的父节点作为新的当前节点继续操作
+            temp = parent;
+            insertNode = temp;
+            return;
+        }
+        // 若当前节点是黑色，且为左子树
+        setBlack(parent);
+        setRed(gParent);
+        // 右旋祖父节点
+        rightRotate(gParent);
     }
 
     /**
@@ -438,52 +412,56 @@ public class RbTree<T extends Comparable<T>> {
         }
     }
 
-    private void removeFixUp(RbTreeNode<T> removeNode, RbTreeNode<T> parent) {
+    private void removeFixUp(RbTreeNode<T> removedReplaceNode, RbTreeNode<T> parent) {
         // case1:红+黑组合
-        if (isRed(removeNode)) {
-            setBlack(removeNode);
+        if (isRed(removedReplaceNode)) {
+            setBlack(removedReplaceNode);
             return;
         }
         // case2:黑+黑组合,且删除节点是根节点
-        if (isBlack(removeNode) && removeNode == this.mRoot) {
+        if (isBlack(removedReplaceNode) && removedReplaceNode == this.mRoot) {
             return;
         }
-        // case3:黑+黑组合,且非根节点
-        RbTreeNode<T> other;
-        while ((removeNode == null || isBlack(removeNode)) && (removeNode != this.mRoot)) {
-            if (parent.left == removeNode) {
-                other = parent.right;
-                if (isRed(other)) {
+        // case3:黑+黑组合,且非根节点,
+        // 定义叔叔节点 uncleNode
+        RbTreeNode<T> uncleNode;
+        while ((removedReplaceNode == null || isBlack(removedReplaceNode)) && (removedReplaceNode != this.mRoot)) {
+            if (parent.left == removedReplaceNode) {
+                uncleNode = parent.right;
+                if (isRed(uncleNode)) {
                     // case3.1:removeNode的兄弟节点是红色的
-                    setBlack(other);
+                    setBlack(uncleNode);
                     setRed(parent);
                     leftRotate(parent);
-                    other = parent.right;
+                    uncleNode = parent.right;
                 }
-                if ((other.left == null || isBlack(other.left))
-                        && (other.right == null || isBlack(other.right))) {
+                if (isAllBlack(uncleNode)) {
                     // case3.2:removeNode的兄弟节点是黑色，且其2个孩子节点也是黑色的
-                    setRed(other);
-                    removeNode = parent;
-                    parent = parentOf(removeNode);
+                    setRed(uncleNode);
+                    removedReplaceNode = parent;
+                    parent = parentOf(removedReplaceNode);
                 } else {
-                    if(other.right == null || isBlack(other.right)){
+                    if (uncleNode.right == null || isBlack(uncleNode.right)) {
                         // case3.2:removeNode的兄弟节点是黑色，且其左孩子是红色，右孩子是黑色
-                        setBlack(other.left);
-                        setRed(other);
-                        rightRotate(other);
-                        other = parent.right;
+                        setBlack(uncleNode.left);
+                        setRed(uncleNode);
+                        rightRotate(uncleNode);
+                        uncleNode = parent.right;
                     }
-                    setColor(other, colorOf(parent));
+                    setColor(uncleNode, colorOf(parent));
                     setBlack(parent);
-                    setBlack(other.right);
+                    setBlack(uncleNode.right);
                     leftRotate(parent);
-                    removeNode = this.mRoot;
+                    removedReplaceNode = this.mRoot;
                     break;
                 }
             } else {
 
             }
         }
+    }
+
+    private boolean isAllBlack(RbTreeNode<T> other) {
+        return (other.left == null || isBlack(other.left)) && (other.right == null || isBlack(other.right));
     }
 }

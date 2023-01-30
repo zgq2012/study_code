@@ -2,12 +2,20 @@ package learn.leecode.testcode;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.thread.NamedThreadFactory;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +28,12 @@ import java.util.stream.Collectors;
 public class Test222 {
 
     public static void main(String[] args) {
+        // watchdog
+        redisTest();
+
+        // post调用表单接口
+        post();
+
         // dynamicThreadPool
         try {
             dynamicThreadPool();
@@ -53,6 +67,45 @@ public class Test222 {
 
         // sortByEnCn
         sortByEnCn();
+    }
+
+    private static void redisTest() {
+//    RedissonClient redissonClient = Redisson.create();
+//        RLock anyLock = redissonClient.getLock("any");
+//        anyLock.lock(10, TimeUnit.SECONDS);
+//
+//        try {
+//            anyLock.tryLock(60, 10, TimeUnit.SECONDS);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+    }
+
+    private static void post() {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("username", "18328704393");
+//        map.put("password", "VMLoNeVf+DFRDMkJTpbvJ+BTKOKwAuWHbFyBBTBW8pPqkXS+fapWYsgwmr2JVmiQ5axfnLvESsVbjGB0usKqKu+aDfhoKL" +
+//                "DKGBPilBnSLY3RNDbQFB07BR7b9DgzCIbutbh24o810mWXN0wU8jPSEcu43dG1OUiP86uNSVH0lByeV++cioYw70Rylru8" +
+//                "+Xqz127LaxYYVZegrkWRHMZSnj6dVUZLREyc72vJ5Hfev3fFxAIXv37dB52AbwEvP52kr5Bbq/Zk2CPmFiPrU+35SWXPEl7" +
+//                "V8FrL0SjeGn9GX611pI2EABfy5knOH04ZlSZp4Ea8fOXCiT9WIlMKf46rWg==");
+//        map.put("authCod", "null");
+//        map.put("grant_type", "password");
+//        map.put("appTypeEnum", "WEB");
+//        map.put("authKey", "null");
+//        map.put("device", "Win32");
+//        map.put("browser", "Chrome/)97.0.4692.99");
+//        map.put("address", "四川省成都市");
+//
+//        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("authorization", "Basic Y2hhb3MtdWFhOmxyd3p5dlpGUEpvWEN5enc=");
+//
+//        String post = HttpUtil.createPost("https://uaa-test.cdcdn.cn:22666/backend/auth/oauth/token")
+//                .addHeaders(headers)
+//                .form(map)
+//                .execute()
+//                .body();
+//        System.out.println("post = " + post);
     }
 
     private static void dynamicThreadPool() throws Exception {
@@ -302,11 +355,34 @@ public class Test222 {
 //        // 执行计算并添加
 //        System.out.println(map.merge(36, "123", (v1, v2) ->  v1.toString().concat(v2.toString())));
 //        System.out.println(map.get(36));
+        String test = "aa_bb_cc_aa_sss_sa_asd_fff_ss";
+        // 统计字符串里面各个字符的出现次数
+        System.out.println(Arrays.stream(ArrayUtil.wrap(test.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+        String tes2t = "aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss";
+        // 统计字符串里面各个字符的出现次数
+        // 使用 parallel() 后，在collect或reduce中操作是线程安全的 {a=948, b=316, s=1106, c=316, d=158, f=474, _=1421}
+        System.out.println(Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+
+        // 使用 parallel() 后，在正常的foreach中操作是线程不安全的 {a=801, b=309, c=310, d=156, f=463, s=180, _=1268}
+        HashMap<Character, Integer> newMap = CollectionUtil.newHashMap();
+        Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().forEach(v -> newMap.compute(v, (v1 ,v2)-> v2 == null ? 1 : v2 + 1));
+        System.out.println(newMap);
     }
 
     private static void countVal() {
-        //        System.out.println(BigDecimal.valueOf(4.59).setScale(0, BigDecimal.ROUND_HALF_EVEN).intValue());
-        //        int real = 15;
+//        System.out.println(BigDecimal.valueOf(4.59).setScale(0, BigDecimal.ROUND_HALF_EVEN).intValue());
+//        int real = 15;
 //        int hisPredict = 25;
 //        System.out.println(BigDecimal.valueOf((1 - (double) Math.abs(hisPredict - real) / real))
 //                .multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP) + "%");

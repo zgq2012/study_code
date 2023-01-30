@@ -1,5 +1,8 @@
 package learn.leecode.bitcount;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 /**
  * 137.只出现一次的数字II
  *
