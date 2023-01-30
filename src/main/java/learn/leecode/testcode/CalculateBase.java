@@ -13,7 +13,7 @@ import java.math.RoundingMode;
 public class CalculateBase {
 
     public static void main(String[] args) throws Exception {
-        String formula = "(( (- 3 * 1 / 3))) + ((1.3 - 4.0) + 1)";
+        String formula = "(( (- 3 * 1 / 3))) + (1.0 * (1.3 - 4.0) * 1.0 + 1)";
         double result = calculateValue(formula.trim());
         double res = BigDecimal.valueOf(result).setScale(2, RoundingMode.CEILING).doubleValue();
         System.out.println("res = " + res);
