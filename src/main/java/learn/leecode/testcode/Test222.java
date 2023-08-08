@@ -28,6 +28,12 @@ import java.util.stream.Collectors;
 public class Test222 {
 
     public static void main(String[] args) {
+        PersonClone clone1 = PersonClone.one.clone();
+        PersonClone clone2 = PersonClone.one.clone();
+
+        System.out.println(clone1.toString());
+        System.out.println(clone2.toString());
+
         // watchdog
         redisTest();
 
@@ -342,8 +348,22 @@ public class Test222 {
 //        System.out.println(map.getOrDefault(13, "a"));
 //        System.out.println(map.get(13));
 //        // key存在 -> 计算后覆盖value, 不存在 -> 计算后添加 key-value
-//        System.out.println(map.compute(12, (v, v2) -> Integer.parseInt(v.toString()) + 12));
+        // (k, v) -> k 是 map的key, v key对应的value
+//        System.out.println(map.compute(12, (k, v) -> v == null ? 1 : Integer.parseInt(v.toString()) + 1));
 //        System.out.println(map.get(12));
+//        System.out.println(map.compute(12, (k, v) -> v == null ? 1 : Integer.parseInt(v.toString()) + 1));
+//        System.out.println(map.get(12));
+//        String s = "aaabbc34c";
+        // 计算每个字符出现的次数
+//        for (char c : s.toCharArray()) {
+//            map.compute(c, (k, v) -> v == null ? 1 : Integer.parseInt(v.toString()) + 1);
+//            map.merge(c, 1, (oldVal, newVal) -> Integer.parseInt(oldVal.toString()) + Integer.parseInt(newVal.toString()));
+//        }
+//        System.out.println(map);
+//
+//        Map<Character, Integer> collect = Arrays.stream(ArrayUtil.wrap(s.toCharArray()))
+//                .collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum));
+//        System.out.println(collect);
 //        // key存在 -> 计算后覆盖value, 不存在 -> 不计算不添加
 //        System.out.println(map.computeIfPresent(12, (v1, v2)-> Integer.parseInt(v1.toString()) + 3));
 //        System.out.println(map.get(12));
@@ -355,29 +375,29 @@ public class Test222 {
 //        // 执行计算并添加
 //        System.out.println(map.merge(36, "123", (v1, v2) ->  v1.toString().concat(v2.toString())));
 //        System.out.println(map.get(36));
-        String test = "aa_bb_cc_aa_sss_sa_asd_fff_ss";
-        // 统计字符串里面各个字符的出现次数
-        System.out.println(Arrays.stream(ArrayUtil.wrap(test.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
-        String tes2t = "aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
-                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss";
-        // 统计字符串里面各个字符的出现次数
-        // 使用 parallel() 后，在collect或reduce中操作是线程安全的 {a=948, b=316, s=1106, c=316, d=158, f=474, _=1421}
-        System.out.println(Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
-
-        // 使用 parallel() 后，在正常的foreach中操作是线程不安全的 {a=801, b=309, c=310, d=156, f=463, s=180, _=1268}
-        HashMap<Character, Integer> newMap = CollectionUtil.newHashMap();
-        Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().forEach(v -> newMap.compute(v, (v1 ,v2)-> v2 == null ? 1 : v2 + 1));
-        System.out.println(newMap);
+//        String test = "aa_bb_cc_aa_sss_sa_asd_fff_ss";
+//        // 统计字符串里面各个字符的出现次数
+//        System.out.println(Arrays.stream(ArrayUtil.wrap(test.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+//        String tes2t = "aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss" +
+//                "_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss_aa_bb_cc_aa_sss_sa_asd_fff_ss";
+//        // 统计字符串里面各个字符的出现次数
+//        // 使用 parallel() 后，在collect或reduce中操作是线程安全的 {a=948, b=316, s=1106, c=316, d=158, f=474, _=1421}
+//        System.out.println(Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().collect(Collectors.toMap(Function.identity(), v -> 1, Integer::sum)));
+//
+//        // 使用 parallel() 后，在正常的foreach中操作是线程不安全的 {a=801, b=309, c=310, d=156, f=463, s=180, _=1268}
+//        HashMap<Character, Integer> newMap = CollectionUtil.newHashMap();
+//        Arrays.stream(ArrayUtil.wrap(tes2t.toCharArray())).parallel().forEach(v -> newMap.compute(v, (v1 ,v2)-> v2 == null ? 1 : v2 + 1));
+//        System.out.println(newMap);
     }
 
     private static void countVal() {

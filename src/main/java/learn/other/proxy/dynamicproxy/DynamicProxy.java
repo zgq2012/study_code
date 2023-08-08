@@ -65,10 +65,12 @@ public class DynamicProxy {
     public static void main(String[] args) {
         RealSubject realSubject = new RealSubject();
         System.out.println(realSubject.getClass());
+
         Subject subject = (Subject) new DynamicProxy(realSubject).getProxyIns();
-        RunIns runIns = (RunIns) new DynamicProxy(realSubject).getProxyIns();
         System.out.println(subject.getClass());
         subject.work("zgq");
+
+        RunIns runIns = (RunIns) new DynamicProxy(realSubject).getProxyIns();
         String res = runIns.runDay("zgq");
         System.out.println("res = " + res);
     }
